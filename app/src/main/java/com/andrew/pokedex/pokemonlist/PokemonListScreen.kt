@@ -76,7 +76,7 @@ fun PokemonListScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-
+                viewModel.setSearchText(it)
             }
             Spacer(
                 modifier = Modifier.height(10.dp)
@@ -200,6 +200,7 @@ fun PokemonGridView(
     val endReached by remember { viewModel.endReached }
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
+    val isSearching by remember { viewModel.isSearching }
 
     LazyVerticalGrid(
         GridCells.Fixed(2),
@@ -208,7 +209,7 @@ fun PokemonGridView(
         contentPadding = PaddingValues(horizontal = 16.dp)
     ) {
         items(pokemonList.size) {
-            if (it == pokemonList.size - 1 && !endReached && !isLoading) {
+            if (it == pokemonList.size - 1 && !endReached && !isLoading && !isSearching) {
                 viewModel.loadPokemonPaginated()
             }
             PokedexEntry(
