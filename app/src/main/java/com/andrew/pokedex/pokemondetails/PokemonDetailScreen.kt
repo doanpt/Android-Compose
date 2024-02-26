@@ -1,5 +1,6 @@
 package com.andrew.pokedex.pokemondetails
 
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -261,10 +262,10 @@ fun PokemonDetailDataSection(
     sectionHeight: Dp = 80.dp
 ) {
     val pokemonWeightInKg = remember {
-        round(pokemonWeight * 100f) / 1000f
+        pokemonWeight * 100f / 1000f
     }
     val pokemonHeightInMeters = remember {
-        round(pokemonHeight * 100f) / 1000f
+        pokemonHeight * 100f / 1000f
     }
     Row(
         modifier = Modifier
@@ -340,6 +341,7 @@ fun PokemonStat(
     LaunchedEffect(key1 = true) {
         animationPlayed = true
     }
+    Log.d("doanpt","statName percen - $curPercent")
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -392,17 +394,16 @@ fun PokemonBaseStats(
             color = MaterialTheme.colorScheme.onSurface
         )
         Spacer(modifier = Modifier.height(4.dp))
+        val stat = pokemonInfo.stats[0]
+        Log.d("doanpt", "statte: ${stat.baseStat} - $maxBaseStat")
+        PokemonStat(
+            statName = parseStatToAbbr(stat),
+            statValue = stat.baseStat,
+            statMaxValue = maxBaseStat,
+            statColor = parseStatToColor(stat),
+            animDelay = 0 * animDelayPerItem
+        )
+        Spacer(modifier = Modifier.height(8.dp))
 
-        for (i in pokemonInfo.stats.indices) {
-            val stat = pokemonInfo.stats[i]
-            PokemonStat(
-                statName = parseStatToAbbr(stat),
-                statValue = stat.baseStat,
-                statMaxValue = maxBaseStat,
-                statColor = parseStatToColor(stat),
-                animDelay = i * animDelayPerItem
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-        }
     }
 }
